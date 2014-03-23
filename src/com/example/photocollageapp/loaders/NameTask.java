@@ -77,6 +77,6 @@ public class NameTask extends AsyncTask<String, Void, String> {
 		    if ( conn != null )
 		        conn.disconnect();
 	    }
-	    return res;
+	    return res == null ? "" : res;
 	}
 }

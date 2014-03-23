@@ -25,82 +25,81 @@ import com.example.photocollageapp.layer.InstagramImage;
 import com.example.photocollageapp.layer.LayoutCollage;
 
 public class FinalActivity extends Activity implements OnClickListener {
-	public static final String TAG = "FINAL";
-	
+    public static final String TAG = "FINAL";
+
     public static final String EXTRA_LAYOUT = TAG + "_layout";
 
     private LayoutCollage mLayout;
     private ArrayList<InstagramImage> mList;
     private Bitmap mCollage;
-    
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.final_collage);
-		
-		if (savedInstanceState == null) {
-			mLayout = (LayoutCollage) getIntent().getExtras().getSerializable(EXTRA_LAYOUT);
-		} else {
-			mLayout = (LayoutCollage) savedInstanceState.getSerializable(EXTRA_LAYOUT);
-		}
-        mList = GalleryActivity.mResult;
-		
-		LinearLayout collageLayout = (LinearLayout) findViewById(R.id.collage_layout);
-		Collage frame = new Collage(getApplicationContext(), this);
-		mCollage = frame.setCollage(mList, mLayout);
-		collageLayout.addView(frame);
-		
-		findViewById(R.id.button_share).setOnClickListener(this);
-	}
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		outState.putSerializable(EXTRA_LAYOUT, mLayout);
-		super.onSaveInstanceState(outState);
-	}
 
-	private String saveCollage() {
-		final String path = Environment.getExternalStorageDirectory().toString();
-		File file = new File(	path, 
-								getString(	R.string.pattern_save_collage_name, 
-											Long.toString(Calendar.getInstance().getTimeInMillis())
-										 )
-							);
-		try {			 
-			FileOutputStream fOS = new FileOutputStream(file);
-			mCollage.compress(CompressFormat.JPEG, 85, fOS);
-		
-			fOS.flush();
-			fOS.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			MediaStore.Images.Media.insertImage(getContentResolver(), file.getAbsolutePath(), file.getName(), file.getName());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		return file.getAbsolutePath();
-	}
-	
-	public void onClick(View v) {
-		switch(v.getId()) {
-		case R.id.button_share:
-			final Intent emailIntent = new Intent(Intent.ACTION_SEND);
-			emailIntent.setType("message/partial");
-			
-			emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {});
-			emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Collage");
-			emailIntent.putExtra(Intent.EXTRA_TEXT,"");
-			
-			emailIntent.setType("image/jpeg");
-			emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(saveCollage()));
-			
-			startActivity(Intent.createChooser(emailIntent, getString(R.string.title_send_email))); 
-	
-			break;
-		}
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.final_collage);
+
+        if (savedInstanceState == null) {
+            mLayout = (LayoutCollage) getIntent().getExtras().getSerializable(EXTRA_LAYOUT);
+        } else {
+            mLayout = (LayoutCollage) savedInstanceState.getSerializable(EXTRA_LAYOUT);
+        }
+        mList = GalleryActivity.mResult;
+
+        LinearLayout collageLayout = (LinearLayout) findViewById(R.id.collage_layout);
+        Collage frame = new Collage(getApplicationContext(), this);
+        mCollage = frame.setCollage(mList, mLayout);
+        collageLayout.addView(frame);
+
+        findViewById(R.id.button_share).setOnClickListener(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(EXTRA_LAYOUT, mLayout);
+        super.onSaveInstanceState(outState);
+    }
+
+    private String saveCollage() {
+        final String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+        File file = new File(path,
+                getString(R.string.pattern_save_collage_name, Long.toString(Calendar.getInstance().getTimeInMillis())
+                )
+        );
+        try {
+            FileOutputStream fOS = new FileOutputStream(file);
+            mCollage.compress(CompressFormat.PNG, 85, fOS);
+
+            fOS.flush();
+            fOS.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            MediaStore.Images.Media.insertImage(getContentResolver(), file.getAbsolutePath(), file.getName(), file.getName());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return file.getAbsolutePath();
+    }
+
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_share:
+                final Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.setType("message/partial");
+
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{});
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Collage");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+
+                emailIntent.setType("image/png");
+                emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + saveCollage()));
+
+                startActivity(Intent.createChooser(emailIntent, getString(R.string.title_send_email)));
+
+                break;
+        }
+    }
 }

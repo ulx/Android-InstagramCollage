@@ -15,12 +15,12 @@ import com.example.photocollageapp.R;
 import com.example.photocollageapp.loaders.BitmapLoader;
 
 public class Collage extends RelativeLayout {
-	private Canvas mCollage;
+//	private Canvas mCollage;
 	private Context mContext;
 	
-	public Canvas getCollage(){
-		return mCollage;
-	}
+//	public Canvas getCollage(){
+//		return mCollage;
+//	}
 	
 	public Collage(Context aContext, Context context) {
 		super(aContext);

@@ -12,7 +12,7 @@
     
     <string name="pattern_instagram_image">https://api.instagram.com/v1/users/%1$s/media/recent/?access_token=34131677.cf2ff6a.09a5080b8e624da5bf2d309b86d2c965</string>
     <string name="pattern_instagram_user_id">https://api.instagram.com/v1/users/search?q=%1$s&amp;access_token=34131677.cf2ff6a.09a5080b8e624da5bf2d309b86d2c965</string>
-    <string name="pattern_save_collage_name">collage%1$s.jpg</string>
+    <string name="pattern_save_collage_name">collage%1$s.png</string>
     <string name="pattern_title_step">Step %1$s of 3:</string>  
     <string name="pattern_title_step3_info">Select %1$s Photo(s)</string>
     
@@ -27,4 +27,7 @@
     <string name="toast_empty_instagram_ID">Please, enter instagram ID!</string>
     <string name="toast_not_found_user">Sorry, user not found!</string>
     <string name="toast_no_photos">No photos!</string>
+    <string name="test_id">mycookingdiary</string>
+    <string name="toast_not_public_image">Not public images!</string>
+
 </resources>

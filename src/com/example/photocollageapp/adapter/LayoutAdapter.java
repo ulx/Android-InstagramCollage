@@ -10,23 +10,25 @@ import android.widget.ImageView;
 import com.example.photocollageapp.R;
 import com.example.photocollageapp.layer.LayoutCollage;
 
+import java.util.List;
+
 public class LayoutAdapter extends BaseAdapter {		
 	private Context mContext;
-	private LayoutCollage[] mList;
+	private List<LayoutCollage> mList;
 
-	public LayoutAdapter(Context ctx, LayoutCollage[] list) {
+	public LayoutAdapter(Context ctx, List<LayoutCollage> list) {
 		mContext = ctx;
 		mList = list;
 	}
 
 	@Override
 	public int getCount() {
-		return mList.length;
+		return mList.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return mList[position];
+		return mList.get(position);
 	}
 
 	@Override
@@ -37,7 +39,7 @@ public class LayoutAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ImageView imageView = new ImageView(mContext);
-		imageView.setImageResource(mList[position].getDrawable());
+		imageView.setImageResource(mList.get(position).getDrawable());
 		
 		imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
